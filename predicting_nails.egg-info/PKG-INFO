@@ -1,0 +1,10 @@
+Metadata-Version: 2.1
+Name: predicting_nails
+Version: 0.0.1
+Summary: Predicting nail diseases
+Requires-Dist: google
+Requires-Dist: tensorflow
+Requires-Dist: keras
+Requires-Dist: matplotlib
+Requires-Dist: numpy
+Requires-Dist: pillow
