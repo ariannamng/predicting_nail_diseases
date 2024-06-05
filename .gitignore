@@ -1,4 +1,4 @@
 .env
 raw_data/
 *.JPG
-simple model.ipynb
+simple_model.ipynb
