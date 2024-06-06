@@ -3,3 +3,7 @@ raw_data/
 *.JPG
 simple model.ipynb
 .python-version
+resnet_based_class.ipynb
+Untitled.ipynb
+.ipynb_checkpoints
+Untitled-checkpoint.ipynb
