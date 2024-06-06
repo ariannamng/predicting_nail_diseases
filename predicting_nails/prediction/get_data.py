@@ -10,21 +10,25 @@ def download_bucket_objects(bucket_name, blob_path, local_path):
     return command
 
 # Define the bucket name and the blob_path and load the data from GBP to a local directory
-def get_data():
+def get_simple_data(nb_healthy = 50, nb_disease = 50):
     local_dir = os.path.join(LOCAL_DATA_PATH, "dataset_for_model_1")
     if os.path.exists(local_dir) == False:
         bucket_name = 'predicting-nail-diseases' # do not use gs://
-        for i in range(0,50):
+        for i in range(0,nb_healthy):
             try:
                 blob_path_h = f'dataset_for_model_1/healthy_data/healthy_{i}.JPG' # blob path in bucket where healthy data is stored
                 local_dir = os.path.join(LOCAL_DATA_PATH, "dataset_for_model_1", f"healthy_{i}.JPG") # path to the RAW data foldr from .env
                 download_bucket_objects(bucket_name, blob_path_h, local_dir)
+            except:
+                pass
+        for i in range(0,nb_disease):
+            try:
                 blob_path_d = f'dataset_for_model_1/diseased_data/diseased_{i}.JPG' # blob path in bucket where diseased data is stored
                 local_dir = os.path.join(LOCAL_DATA_PATH, "dataset_for_model_1", f"diseased_{i}.JPG") # path to the RAW data foldr from .env
                 download_bucket_objects(bucket_name, blob_path_d, local_dir)
             except:
                 pass
-get_data()
+
 
 def load_simple_data(path, nb_healthy = 50, nb_disease = 50):
 
