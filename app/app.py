@@ -2,7 +2,10 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import os
+import requests
 from PIL import Image
+#from gen_ai import ask_questions
+
 col1, col2 = st.columns([4,4])
 # Assume 'predict_disease' is a function from your CNN model module
 #from model import predict_disease
@@ -11,7 +14,6 @@ col1, col2 = st.columns([4,4])
 col1.markdown("# Nail Analysis :)")
 
 # Add a picture under the header in column 1
-#image_path = os.path.join("predicting_nail_diseases", "imagem para site", "imagem para site.jpg")
 image_path = "imagemsite.jpg"
 col1.image(image_path, caption='steps to capture a clear nail image', use_column_width=True)
 
@@ -23,18 +25,18 @@ uploaded_image = col2.file_uploader("Choose an image...", type=["jpg", "png", "j
 if uploaded_image is not None:
     # Display the uploaded image
     image = Image.open(uploaded_image)
-    st.image(image, caption='Uploaded Image', use_column_width=True)
+    col1.image(image, caption='Uploaded Image', use_column_width=True)
 
     # Predict disease using the CNN model
-    prediction = predict_disease(image)
+    prediction = "Healthy nails" #TODO change after model is done
 
     # Display the prediction
-    st.markdown("### Model Prediction")
+    col2.markdown("### Model Prediction")
     if prediction:
-        st.write(f"The model predicts: **{prediction}**")
+        col2.write(f"**{prediction}**")
     else:
-        st.write("The model couldn't make a prediction for this image.")
-        st.warning("You cannot ask a question until the model makes a prediction.")
+        col2.write("The model couldn't make a prediction for this image.")
+        col2.warning("You cannot ask a question until the model makes a prediction.")
 
         # Exit early if no prediction is available
         st.stop()
@@ -48,9 +50,11 @@ user_question = st.text_area("Enter your question here:")
 if st.button("Get Answer"):
     if user_question:
         # Simulate a response from the AI (this should be replaced with actual AI inference code)
-        response = "This is a simulated response to your question."
+        response = requests.get("http://127.0.0.1:8000/answer_question", params={'prediction' : 'Healthy nails' , 'question' : user_question})#change this to the prediction
         st.markdown("#### AI Response:")
-        st.write(response)
+        #st.write(response)
+        #st.write(response.json().keys())
+        st.write(response.json()['answer'])
     else:
         st.warning("Please enter a question before clicking the button.")
 # bottom text
