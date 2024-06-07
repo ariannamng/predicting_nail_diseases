@@ -3,7 +3,9 @@ import pandas as pd
 import numpy as np
 import os
 from PIL import Image
-from gen_ai.gen_ai import ask_questions
+from gen_ai.gen_ai import question_pipeline_func
+import requests
+from PIL import Image
 
 
 col1, col2 = st.columns([4,4])
@@ -34,7 +36,7 @@ if uploaded_image is not None:
     # Display the prediction
     st.markdown("### Model Prediction")
     if prediction:
-        st.write(f"The model predicts: **{prediction}**")
+        st.write(f"**{prediction}**")
     else:
         st.write("The model couldn't make a prediction for this image.")
         st.warning("You cannot ask a question until the model makes a prediction.")
@@ -51,9 +53,12 @@ user_question = st.text_area("Enter your question here:")
 if st.button("Get Answer"):
     if user_question:
         # Simulate a response from the AI (this should be replaced with actual AI inference code)
-        response = ask_questions("Healthy nails")#change this to the prediction
+        response = requests.get("http://127.0.0.1:8000/answer_question", params={'prediction' : 'Healthy nails' , 'question' : user_question})#change this to the prediction
         st.markdown("#### AI Response:")
-        st.write(response)
+        #st.write(response)
+        #st.write(response)
+        #st.write(response.json().keys())
+        st.write(response.json()['answer'])
     else:
         st.warning("Please enter a question before clicking the button.")
 # bottom text
