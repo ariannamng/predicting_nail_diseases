@@ -6,6 +6,7 @@ import glob
 from colorama import Fore, Style
 from tensorflow import keras
 from google.cloud import storage
+# from preprocessing import preprocesssing_user_image
 
 def load_model() -> keras.Model:
     """
@@ -14,7 +15,7 @@ def load_model() -> keras.Model:
     - or from GCS (most recent one) if MODEL_TARGET=='gcs'
     Return None (but do not Raise) if no model is found
     """
-    
+
     if MODEL_TARGET == "local":
         print(Fore.BLUE + f"\nLoad latest model from local registry..." + Style.RESET_ALL)
 
