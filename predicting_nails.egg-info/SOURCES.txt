@@ -1,5 +1,7 @@
 README.md
 setup.py
+gen_ai/__init__.py
+gen_ai/gen_ai.py
 predicting_nails/__init__.py
 predicting_nails/params.py
 predicting_nails.egg-info/PKG-INFO
@@ -8,5 +10,5 @@ predicting_nails.egg-info/dependency_links.txt
 predicting_nails.egg-info/not-zip-safe
 predicting_nails.egg-info/requires.txt
 predicting_nails.egg-info/top_level.txt
-predicting_nails/get_data/__init__.py
-predicting_nails/get_data/get_data.py
+predicting_nails/prediction/__init__.py
+predicting_nails/prediction/get_data.py
