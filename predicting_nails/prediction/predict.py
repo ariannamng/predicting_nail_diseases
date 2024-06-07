@@ -60,6 +60,7 @@ def load_model() -> keras.Model:
 
 def predict(X_pred):
     """
+    Preprocess the image.
     Make a binary prediction of healthy and diseases nails.
     """
     X_processed = preprocesssing_user_image(X_pred)
@@ -68,4 +69,4 @@ def predict(X_pred):
         y_pred = model.predict(X_processed)
         return LABLES_SIMPLE[y_pred]
     except:
-        print("\n❌ Prediction failed")
+        print("\n❌ Prediction failed. Check your models")
