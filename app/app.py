@@ -27,7 +27,7 @@ uploaded_image = col2.file_uploader("Choose an image...", type=["jpg", "png", "j
 if uploaded_image is not None:
     # Display the uploaded image
     image = Image.open(uploaded_image)
-    st.image(image, caption='Uploaded Image', use_column_width=True)
+    col1.image(image, caption='Uploaded Image', use_column_width=True)
 
     # Predict disease using the CNN model
     #TODO prediction = predict_disease(image) ---->> comment this out when  MODEL IS READY
@@ -35,8 +35,10 @@ if uploaded_image is not None:
 
     # Display the prediction
     st.markdown("### Model Prediction")
+    col2.markdown("### Model Prediction")
     if prediction:
-        st.write(f"**{prediction}**")
+        st.write(f"The model predicts: **{prediction}**")
+        col2.write(f"**{prediction}**")
     else:
         st.write("The model couldn't make a prediction for this image.")
         st.warning("You cannot ask a question until the model makes a prediction.")
@@ -59,7 +61,9 @@ if st.button("Get Answer"):
         #st.write(response)
         #st.write(response.json().keys())
         st.write(response.json()['answer'])
+         # Add space before the bottom text
+        st.markdown("<br><br><br>", unsafe_allow_html=True)
     else:
         st.warning("Please enter a question before clicking the button.")
 # bottom text
-st.markdown("This application is designed for educational purposes only, not as medical advice. The neural network predicts diseases from images, while the AI transformer answers questions about those diseases. Users should use it with awareness of its limitations and academic context.", unsafe_allow_html=True)
+st.markdown("This application is designed for educational purposes only, not as medical advice. The neural network predicts diseases from images, while the AI transformer answers questions about those diseases. Users should use it with awareness of its limitations and academic context.🤘", unsafe_allow_html=True)
