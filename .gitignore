@@ -1,4 +1,13 @@
 .env
 raw_data/
 *.JPG
+<<<<<<< HEAD
 simple_model.ipynb
+=======
+simple model.ipynb
+.python-version
+resnet_based_class.ipynb
+Untitled.ipynb
+.ipynb_checkpoints
+Untitled-checkpoint.ipynb
+>>>>>>> 2fe843b0eb595f32e862126efc3dcdc7a0f8ab8a

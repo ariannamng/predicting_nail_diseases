@@ -4,3 +4,12 @@ keras
 matplotlib
 numpy
 pillow
+transformers
+torch
+pytesseract
+sentencepiece
+sacremoses
+streamlit
+fastapi
+uvicorn
+colorama
