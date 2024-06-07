@@ -78,13 +78,43 @@ def predict(img):
         result = model.predict(X_processed)[0][0]
         print(result)
         if(result < 0.5):
-          prediction = "healthy nail"
-          prob = 1-result
+          prediction = "Healthy nails"
+          prob = np.round(1-result,3)
         if(result >= 0.5):
           prediction = "diseased nail"
-          prob = result
+          prob = np.round(result,3)
         #return LABLES_SIMPLE[y_pred]
-        print("The prediction is a", prediction,"with", prob, "% probability.")
-        return prediction
+        print("The prediction is a", prediction,"with", prob*100, "% probability.")
+        return prediction, prob
     except:
         print("\n❌ Prediction failed. Check your models")
+
+
+
+def predict2():
+    '''Preprocess the image.
+    Make a binary prediction of healthy and diseases nails.'''
+
+    #X_processed = preprocesssing_user_image(X_pred)
+    path = "/home/cla/code/ariannamng/predicting_nail_diseases/imagens/healthy_106.JPG"
+    img = Image.open(path)
+    foo = img.resize((256,256))
+    img_array = keras.utils.img_to_array(foo)
+    X_reshaped = img_array.reshape((-1, 256, 256, 3))
+    X_processed = X_reshaped/255.0 - 0.5
+    model = load_model()
+    try:
+        result = model.predict(X_processed)[0][0]
+        print(result)
+        if(result < 0.5):
+          prediction = "healthy nail"
+          prob = np.round(1-result, 3)
+        if(result >= 0.5):
+          prediction = "diseased nail"
+          prob = np.round(result,3)
+        #return LABLES_SIMPLE[y_pred]
+        print("The prediction is a", prediction,"with", prob*100, "% probability.")
+        return prediction, prob
+    except:
+        print("\n:x: Prediction failed. Check your models")
+predict2()
