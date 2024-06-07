@@ -1,7 +1,7 @@
 .env
 raw_data/
 *.JPG
-simple model.ipynb
+*.ipynb
 .python-version
 resnet_based_class.ipynb
 Untitled.ipynb

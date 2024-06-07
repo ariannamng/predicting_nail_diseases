@@ -37,14 +37,14 @@ def load_simple_data(path, nb_healthy = 50, nb_disease = 50):
     for i in range(nb_healthy):
         h_path = os.path.join(path, 'dataset_for_model_1', f'healthy_{i}.JPG')
         img = Image.open(h_path)
-        foo = img.resize((224,224))
+        foo = img.resize((256,256))
         X.append(np.array(foo))
         y.append(0)
 
     for i in range(nb_disease):
         d_path = os.path.join(path, 'dataset_for_model_1', f'diseased_{i}.JPG')
         img = Image.open(h_path)
-        foo = img.resize((224,224))
+        foo = img.resize((256,256))
         X.append(np.array(foo))
         y.append(1)
 
