@@ -5,6 +5,7 @@ from PIL import Image
 import glob
 from colorama import Fore, Style
 from tensorflow import keras
+
 from google.cloud import storage
 # from preprocessing import preprocesssing_user_image
 
@@ -20,7 +21,7 @@ def load_model() -> keras.Model:
         print(Fore.BLUE + f"\nLoad latest model from local registry..." + Style.RESET_ALL)
 
         # Get the latest model version name by the timestamp on disk
-        local_model_directory = os.path.join(LOCAL_REGISTRY_PATH, "models")
+        local_model_directory = os.path.join(LOCAL_REGISTRY_PATH)
         local_model_paths = glob.glob(f"{local_model_directory}/*")
 
         if not local_model_paths:
@@ -30,7 +31,9 @@ def load_model() -> keras.Model:
 
         print(Fore.BLUE + f"\nLoad latest model from disk..." + Style.RESET_ALL)
 
+        #latest_model = keras.layers.TFSMLayer(most_recent_model_path_on_disk)
         latest_model = keras.models.load_model(most_recent_model_path_on_disk)
+
 
         print("✅ Model loaded from local disk")
 
@@ -58,15 +61,30 @@ def load_model() -> keras.Model:
             return None
 
 
-def predict(X_pred):
+def predict(img):
     """
     Preprocess the image.
     Make a binary prediction of healthy and diseases nails.
     """
-    X_processed = preprocesssing_user_image(X_pred)
+    #X_processed = preprocesssing_user_image(X_pred)
+    #img = Image.open(image)
+    foo = img.resize((256,256))
+    img_array = keras.utils.img_to_array(foo)
+    X_reshaped = img_array.reshape((-1, 256, 256, 3))
+    X_processed = X_reshaped/255.0 - 0.5
+
     model = load_model()
     try:
-        y_pred = model.predict(X_processed)
-        return LABLES_SIMPLE[y_pred]
+        result = model.predict(X_processed)[0][0]
+        print(result)
+        if(result < 0.5):
+          prediction = "healthy nail"
+          prob = 1-result
+        if(result >= 0.5):
+          prediction = "diseased nail"
+          prob = result
+        #return LABLES_SIMPLE[y_pred]
+        print("The prediction is a", prediction,"with", prob, "% probability.")
+        return prediction
     except:
         print("\n❌ Prediction failed. Check your models")
