@@ -12,3 +12,4 @@ sacremoses
 streamlit
 fastapi
 uvicorn
+colorama
