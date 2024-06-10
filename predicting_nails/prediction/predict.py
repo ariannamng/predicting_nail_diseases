@@ -78,13 +78,13 @@ def predict(img):
         result = model.predict(X_processed)[0][0]
         print(result)
         if(result < 0.5):
-          prediction = "healthy nail"
-          prob = 1-result
+          prediction = "Healthy nails"
+          prob = np.round(1-result,3)
         if(result >= 0.5):
           prediction = "diseased nail"
-          prob = result
+          prob = np.round(result,3)
         #return LABLES_SIMPLE[y_pred]
-        print("The prediction is a", prediction,"with", prob, "% probability.")
-        return prediction
+        print("The prediction is a", prediction,"with", prob*100, "% probability.")
+        return prediction, prob
     except:
         print("\n❌ Prediction failed. Check your models")

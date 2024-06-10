@@ -7,3 +7,25 @@ resnet_based_class.ipynb
 Untitled.ipynb
 .ipynb_checkpoints
 Untitled-checkpoint.ipynb
+**/__pycache__/**
+.env.yaml
+train_flow-deployment.yaml
+# System files
+.DS_Store
+.ipynb_checkpoints
+*.pyc
+*.swp
+.coverage
+*.iml
+*.egg-info
+*.vscode
+# Data files
+*.csv
+*.sqlite
+*.zip
+*.sublime-workspace
+**/*.code-workspace
+data for model Nail/
+# Other
+pytestdebug.log
+models
