@@ -28,10 +28,19 @@ uploaded_image = col2.file_uploader("Choose an image...", type=["jpg", "png", "j
 if uploaded_image is not None:
     # Display the uploaded image
     image = Image.open(uploaded_image)
+    image.save('image.jpg')
+
     col1.image(image, caption='Uploaded Image', use_column_width=True)
 
     # Predict disease using the CNN model
-    prediction, prob = predict(image)
+    # prediction, prob = predict(image)
+
+    with open('image.jpg', 'rb') as f:
+        response = requests.post("http://127.0.0.1:8000/predict",files={'file':f}).json()
+
+    prediction = response['pred']
+    prob = response['prob']
+
     #prediction = 'Healthy nails'
     prob_rounded = np.round(prob, 3)*100
     # Display the prediction
@@ -55,7 +64,7 @@ user_question = st.text_area("Enter your question here:")
 if st.button("Get Answer"):
     if user_question:
         # Simulate a response from the AI (this should be replaced with actual AI inference code)
-        response = requests.get("http://127.0.0.1:8000/answer_question", params={'prediction' : 'Healthy nails' , 'question' : user_question})#change this to the prediction
+        response = requests.get("http://127.0.0.1:8000/answer_question", params={'prediction' : prediction , 'question' : user_question})#change this to the prediction
         st.markdown("#### AI Response:")
 
         st.write(response.json()['answer'])
