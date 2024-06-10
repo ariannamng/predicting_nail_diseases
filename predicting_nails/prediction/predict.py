@@ -79,8 +79,10 @@ def predict():
         result = model.predict(X_processed)[0][0]
         print(result)
         if(result < 0.5):
-          prediction = "healthy nail"
-          prob = np.round(1-result, 3)
+
+          prediction = "Healthy nails"
+          prob = np.round(1-result,3)
+
         if(result >= 0.5):
           prediction = "diseased nail"
           prob = np.round(result,3)
