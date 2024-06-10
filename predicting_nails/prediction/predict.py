@@ -61,13 +61,14 @@ def load_model() -> keras.Model:
             return None
 
 
-def predict(img):
+def predict():
     """
     Preprocess the image.
     Make a binary prediction of healthy and diseases nails.
     """
     #X_processed = preprocesssing_user_image(X_pred)
-    #img = Image.open(image)
+    path = "/Users/ariannamenghini/code/ariannamng/predicting_nail_diseases/raw_data/dataset_for_model_1/healthy_4.JPG"
+    img = Image.open(path)
     foo = img.resize((256,256))
     img_array = keras.utils.img_to_array(foo)
     X_reshaped = img_array.reshape((-1, 256, 256, 3))
@@ -78,8 +79,10 @@ def predict(img):
         result = model.predict(X_processed)[0][0]
         print(result)
         if(result < 0.5):
+
           prediction = "Healthy nails"
           prob = np.round(1-result,3)
+
         if(result >= 0.5):
           prediction = "diseased nail"
           prob = np.round(result,3)
@@ -88,3 +91,9 @@ def predict(img):
         return prediction, prob
     except:
         print("\n❌ Prediction failed. Check your models")
+
+
+predict()
+
+
+
