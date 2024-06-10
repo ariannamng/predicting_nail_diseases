@@ -6,7 +6,7 @@ warnings.filterwarnings('ignore')
 # Instantiate question-answering transformer
 #questions_pipe = pipeline("question-answering", model="deepset/roberta-base-squad2")
 
-#dictionary
+#dictionary like this
 resources = {"Healthy nails" : """Healthy fingernails are characterized by their smooth texture, absence of pits or grooves, uniform color, and consistent structure.
 The anatomy of the fingernail is composed of several distinct parts. The nail plate, the visible hard part of the nail, is primarily made of keratin, a resilient protein also found in hair and the outer layer of skin. Beneath the nail plate is the nail bed, a layer of skin rich in blood vessels that nourish the nail. The cuticle, a protective barrier of tissue, seals the space between the nail plate and the skin, preventing infection. The lunula, the crescent-shaped whitish area at the base of the nail, is part of the matrix where new nail cells are produced.
 Healthy fingernails typically do not exhibit abnormalities such as discoloration, spots, or irregularities. Common benign variations include vertical ridges, which may become more prominent with age, and small white spots, often resulting from minor trauma. However, significant changes in nail appearance can signal underlying health issues.
