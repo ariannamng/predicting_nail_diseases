@@ -36,7 +36,7 @@ if uploaded_image is not None:
     # prediction, prob = predict(image)
 
     with open('image.jpg', 'rb') as f:
-        response = requests.post("http://127.0.0.1:8000/predict",files={'file':f}).json()
+        response = requests.post("https://nailpred-llcndp3loa-od.a.run.app/predict",files={'file':f}).json()
 
     prediction = response['pred']
     prob = response['prob']
@@ -64,7 +64,7 @@ user_question = st.text_area("Enter your question here:")
 if st.button("Get Answer"):
     if user_question:
         # Simulate a response from the AI (this should be replaced with actual AI inference code)
-        response = requests.get("http://127.0.0.1:8000/answer_question", params={'prediction' : prediction , 'question' : user_question})#change this to the prediction
+        response = requests.get("https://nailpred-llcndp3loa-od.a.run.app/answer_question", params={'prediction' : prediction , 'question' : user_question})#change this to the prediction
         st.markdown("#### AI Response:")
 
         st.write(response.json()['answer'])

@@ -1,11 +1,7 @@
-google
-tensorflow
-keras
+google-cloud-storage
 matplotlib
 numpy
 pillow
-transformers
-torch
 pytesseract
 sentencepiece
 sacremoses
@@ -13,3 +9,4 @@ streamlit
 fastapi
 uvicorn
 colorama
+python-multipart
