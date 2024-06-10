@@ -7,7 +7,7 @@ resnet_based_class.ipynb
 Untitled.ipynb
 .ipynb_checkpoints
 Untitled-checkpoint.ipynb
-__pycache__
+**/__pycache__/**
 .env.yaml
 train_flow-deployment.yaml
 # System files
@@ -25,5 +25,7 @@ train_flow-deployment.yaml
 *.zip
 *.sublime-workspace
 **/*.code-workspace
+data for model Nail/
 # Other
 pytestdebug.log
+models
