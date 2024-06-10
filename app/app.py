@@ -16,7 +16,7 @@ col1, col2 = st.columns([4,4])
 col1.markdown("# Nail Analysis :)")
 
 # Add a picture under the header in column 1
-image_path = "imagemsite.jpg"
+image_path = "app/imagemsite.jpg"
 col1.image(image_path, caption='steps to capture a clear nail image', use_column_width=True)
 
 # Image upload section
@@ -32,7 +32,6 @@ if uploaded_image is not None:
     # Predict disease using the CNN model
     #TODO prediction = predict_disease(image) ---->> comment this out when  MODEL IS READY
     prediction = 'Healthy nails'
-
     # Display the prediction
     st.markdown("### Model Prediction")
     if prediction:
