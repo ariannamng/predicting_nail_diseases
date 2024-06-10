@@ -28,7 +28,7 @@ uploaded_image = col2.file_uploader("Choose an image...", type=["jpg", "png", "j
 if uploaded_image is not None:
     # Display the uploaded image
     image = Image.open(uploaded_image)
-    image.save('image.jpg')
+    image.convert('RGB').save('image.jpg')
 
     col1.image(image, caption='Uploaded Image', use_column_width=True)
 
