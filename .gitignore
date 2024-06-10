@@ -1,6 +1,7 @@
 .env
 raw_data/
 *.JPG
+!imagemsite.jpg
 *.ipynb
 .python-version
 resnet_based_class.ipynb
