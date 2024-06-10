@@ -1,6 +1,0 @@
-google
-tensorflow
-keras
-matplotlib
-numpy
-pillow
