@@ -38,7 +38,7 @@ if st.session_state.stage == 0:
 #if uploaded_image is not None:
     # Display the uploaded image
    # image = Image.open(uploaded_image)
-    #image.convert('RGB').save('image.jpg')
+
 
 
 def set_state(i):
@@ -55,6 +55,7 @@ if st.session_state.stage == 1: #cropping an image
     if img_file:
         st.markdown("##### Start by selecting the nail in your image:")
         img = Image.open(img_file)
+        img.convert('RGB').save('image.jpg')
         if not realtime_update:
             st.write("Double click to save crop")
         # Get a cropped image from the frontend
@@ -65,9 +66,6 @@ if st.session_state.stage == 1: #cropping an image
         st.write("Preview")
         tumbnail_ = image.thumbnail((150,150))
         tn1.image(image)
-
-
-        image.save('image.jpg')
 
         with open('image.jpg', 'rb') as f:
             st.session_state.response = requests.post("https://nailpred-llcndp3loa-od.a.run.app/predict",files={'file':f}).json()
