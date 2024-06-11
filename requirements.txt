@@ -13,3 +13,4 @@ fastapi
 uvicorn
 colorama
 python-multipart
+streamlit_cropper
