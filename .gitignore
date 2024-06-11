@@ -1,13 +1,14 @@
 .env
 raw_data/
 *.JPG
+!imagemsite.jpg
 *.ipynb
 .python-version
 resnet_based_class.ipynb
 Untitled.ipynb
 .ipynb_checkpoints
 Untitled-checkpoint.ipynb
-**/__pycache__/**
+__pycache__/
 .env.yaml
 train_flow-deployment.yaml
 # System files
