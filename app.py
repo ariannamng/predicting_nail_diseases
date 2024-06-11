@@ -37,7 +37,8 @@ if st.session_state.stage == 0:
 
 #if uploaded_image is not None:
     # Display the uploaded image
-    #image = Image.open(uploaded_image)
+   # image = Image.open(uploaded_image)
+    #image.convert('RGB').save('image.jpg')
 
 
 def set_state(i):
@@ -81,7 +82,7 @@ if st.session_state.stage == 2: # prediction and Q&A
             botton1.text("")
     st.session_state.stage = 0
     with open('image.jpg', 'rb') as f:
-        response = requests.post("http://127.0.0.1:8000/predict",files={'file':f}).json()
+        response = requests.post("https://nailpred-llcndp3loa-od.a.run.app/predict",files={'file':f}).json()
 
     prediction = response['pred']
     prob = response['prob']
@@ -129,4 +130,3 @@ if st.session_state.stage == 2: # prediction and Q&A
 
         # Exit early if no prediction is available
         st.stop()
-    #st.session_state.stage = 1
