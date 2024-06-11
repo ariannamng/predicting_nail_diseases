@@ -53,7 +53,7 @@ if st.session_state.stage == 1: #cropping an image
     realtime_update = st.sidebar.checkbox(label="Update in Real Time", value=True)
     #box_color = st.sidebar.color_picker(label="Box Color", value='#AF0409')
     if img_file:
-        st.markdown("##### Let's start by selecting the nail in your image")
+        st.markdown("##### Start by selecting the nail in your image:")
         img = Image.open(img_file)
         if not realtime_update:
             st.write("Double click to save crop")
@@ -80,7 +80,6 @@ if st.session_state.stage == 2: # prediction and Q&A
     botton1.markdown("# Nail Analysis")
     for i in range (0,1):
             botton1.text("")
-    st.session_state.stage = 0
     with open('image.jpg', 'rb') as f:
         response = requests.post("https://nailpred-llcndp3loa-od.a.run.app/predict",files={'file':f}).json()
 
@@ -96,7 +95,7 @@ if st.session_state.stage == 2: # prediction and Q&A
     b2.button('new prediction', on_click=set_state, args=[1])
     for i in range (0,2):
             b2.text("")
-    pred3.markdown("### Model Prediction")
+    pred3.markdown("### Model's Prediction")
     if prediction:
 
         pred1.image('image.jpg')
@@ -108,13 +107,11 @@ if st.session_state.stage == 2: # prediction and Q&A
         st.markdown(f"#### Ask a Question about {prediction}")
         user_question = st.text_area("Enter your question here:")
 
-
-
         # Question and answers
         if st.button("Get Answer"):
             if user_question:
                     # Simulate a response from the AI (this should be replaced with actual AI inference code)
-                    response = requests.get("http://127.0.0.1:8000/answer_question", params={'prediction' : prediction , 'question' : user_question})#change this to the prediction
+                    response = requests.get("https://nailpred-llcndp3loa-od.a.run.app/answer_question", params={'prediction' : prediction , 'question' : user_question})#change this to the prediction
                     st.markdown("#### AI Response:")
 
                     st.write(response.json()['answer'])
