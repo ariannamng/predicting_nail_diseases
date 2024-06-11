@@ -38,7 +38,7 @@ if st.session_state.stage == 0:
 #if uploaded_image is not None:
     # Display the uploaded image
    # image = Image.open(uploaded_image)
-    #image.convert('RGB').save('image.jpg')
+
 
 
 def set_state(i):
@@ -55,6 +55,7 @@ if st.session_state.stage == 1: #cropping an image
     if img_file:
         st.markdown("##### Start by selecting the nail in your image:")
         img = Image.open(img_file)
+        img.convert('RGB').save('image.jpg')
         if not realtime_update:
             st.write("Double click to save crop")
         # Get a cropped image from the frontend
@@ -66,8 +67,10 @@ if st.session_state.stage == 1: #cropping an image
         tumbnail_ = image.thumbnail((150,150))
         tn1.image(image)
 
+        with open('image.jpg', 'rb') as f:
+            st.session_state.response = requests.post("https://nailpred-llcndp3loa-od.a.run.app/predict",files={'file':f}).json()
 
-        image.save('image.jpg')
+        st.session_state.image = image
 
 
         tn3.text("")
@@ -78,13 +81,10 @@ if st.session_state.stage == 1: #cropping an image
 
 if st.session_state.stage == 2: # prediction and Q&A
     botton1.markdown("# Nail Analysis")
-    for i in range (0,1):
-            botton1.text("")
-    with open('image.jpg', 'rb') as f:
-        response = requests.post("https://nailpred-llcndp3loa-od.a.run.app/predict",files={'file':f}).json()
+    botton1.text("")
 
-    prediction = response['pred']
-    prob = response['prob']
+    prediction = st.session_state.response['pred']
+    prob = st.session_state.response['prob']
 
     #prediction = 'Healthy nails'
     prob_rounded = np.round(prob, 3)*100
@@ -98,7 +98,7 @@ if st.session_state.stage == 2: # prediction and Q&A
     pred3.markdown("### Model's Prediction")
     if prediction:
 
-        pred1.image('image.jpg')
+        pred1.image(st.session_state.image)
         pred3.success(f"{prediction}, probability {prob_rounded}%")
 
         for i in range (0,13):
