@@ -18,4 +18,4 @@ async def prediction(file: UploadFile):
     # request_object_content = await file.read()
     # img = Image.open(io.BytesIO(request_object_content))
     pred,prob= predict(img)
-    return {'pred' : pred,'prob':prob}
+    return {'pred' : pred,'prob':float(prob)}
