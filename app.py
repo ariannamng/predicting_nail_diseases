@@ -47,7 +47,7 @@ if st.session_state.stage == 0:
     for i in range (0,3):
         col6.text("")
     # Image upload section
-    image_path = "imagempsite.png"
+    image_path = "imagemsite.png"
     st.image(image_path, caption='', use_column_width=True)
     col5.text("")
     col5.markdown("##### Upload an image to check if your nails are healthy")
