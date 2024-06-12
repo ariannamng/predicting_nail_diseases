@@ -8,7 +8,17 @@ from tensorflow import keras
 
 from google.cloud import storage
 # from preprocessing import preprocesssing_user_image
-
+categories = ['normal', 'beau_s line', 'black line', 'clubbing', 'mees_ line', 'onycholysis', 'terry_s nail', 'white spot']
+friendly_names = {
+    'normal': 'Healthy nail',
+    'beau_s line': 'Beaus line',
+    'black line': 'Black line',
+    'clubbing': 'Clubbing',
+    'mees_ line': 'Mees line',
+    'onycholysis': 'Onycholysis',
+    'terry_s nail': 'Terry\'s nail',
+    'white spot': 'White spot'
+}
 def load_model() -> keras.Model:
     """
     Return a saved model:
@@ -31,7 +41,6 @@ def load_model() -> keras.Model:
 
         print(Fore.BLUE + f"\nLoad latest model from disk..." + Style.RESET_ALL)
 
-        #latest_model = keras.layers.TFSMLayer(most_recent_model_path_on_disk)
         latest_model = keras.models.load_model(most_recent_model_path_on_disk)
 
 
@@ -74,17 +83,85 @@ def predict(img):
     X_processed = X_reshaped/255.0 - 0.5
 
     model = load_model()
+
+
     try:
-        result = model.predict(X_processed)[0][0]
-        print(result)
-        if(result < 0.5):
-          prediction = "Healthy nails"
-          prob = np.round(1-result,3)
-        if(result >= 0.5):
-          prediction = "diseased nail"
-          prob = np.round(result,3)
-        #return LABLES_SIMPLE[y_pred]
-        print("The prediction is a", prediction,"with", prob*100, "% probability.")
-        return prediction, prob
-    except:
-        print("\n❌ Prediction failed. Check your models")
+        result = model.predict(X_processed)[0]
+        max_prob = np.max(result)
+        prediction = ""
+        prob = 0
+
+        if result[0] == max_prob:
+            prediction = 'normal'
+            prob = result[0]
+        elif result[1] == max_prob:
+            prediction = 'beau_s line'
+            prob = result[1]
+        elif result[2] == max_prob:
+            prediction = 'black line'
+            prob = result[2]
+        elif result[3] == max_prob:
+            prediction = 'clubbing'
+            prob = result[3]
+        elif result[4] == max_prob:
+            prediction = 'mees_ line'
+            prob = result[4]
+        elif result[5] == max_prob:
+            prediction = 'onycholysis'
+            prob = result[5]
+        elif result[6] == max_prob:
+            prediction = 'terry_s nail'
+            prob = result[6]
+        elif result[7] == max_prob:
+            prediction = 'white spot'
+            prob = result[7]
+
+        friendly_name = friendly_names[prediction]
+        prob = np.round(prob, 3)
+
+        if prediction != 'normal':
+            disease_status = 'Disease'
+            print(f"The prediction is '{disease_status}: {friendly_name}' with {prob*100}% probability.")
+            return disease_status, friendly_name, prob
+        else:
+            print(f"The prediction is '{friendly_name}' with {prob*100}% probability.")
+            return friendly_name, prob
+    except Exception as e:
+        print(f"\n❌ Prediction failed. Check your models. Error: {e}")
+        return None, None
+
+
+
+    #     friendly_name = friendly_names[prediction]
+    #     prob = np.round(prob, 3)
+    #     print(f"The prediction is '{friendly_name}' with {prob*100}% probability.")
+    #     return friendly_name, prob
+    # except Exception as e:
+    #     print(f"\n❌ Prediction failed. Check your models. Error: {e}")
+    #     return None, None
+
+    # try:
+    #     result = model.predict(X_processed)[0]
+    #     prediction_idx = np.argmax(result)
+    #     prediction = categories[prediction_idx]
+    #     prob = np.round(result[prediction_idx], 3)
+    #     print(f"The prediction is '{prediction}' with {prob*100}% probability.")
+    #     return prediction, prob
+    # except Exception as e:
+    #     print(f"\n❌ Prediction failed. Check your models. Error: {e}")
+    #     return None, None
+
+    # try:
+    #     result = model.predict(X_processed)[0][0]
+    #     print(result)
+    #     if(result < 0.5):
+    #       prediction = "Healthy nails"
+    #       prob = np.round(1-result,3)
+    #     if(result >= 0.5):
+    #       prediction = "diseased nail"
+    #       prob = np.round(result,3)
+    #     #return LABLES_SIMPLE[y_pred]
+    #     print("The prediction is a", prediction,"with", prob*100, "% probability.")
+    #     return prediction, prob
+    # except:
+    #     print("\n❌ Prediction failed. Check your models")
