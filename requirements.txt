@@ -14,3 +14,4 @@ uvicorn
 colorama
 python-multipart
 streamlit_cropper
+inference_sdk
