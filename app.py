@@ -8,10 +8,29 @@ import requests
 from PIL import Image
 from predicting_nails.prediction.predict import predict
 from streamlit_cropper import st_cropper
+from predicting_nails.bounding_box import detect_nail_bounding_box
+
+
+# Remove whitespace from the top of the page and sidebar
+st.markdown("""
+        <style>
+               .css-18e3th9 {
+                    padding-top: 0rem;
+                    padding-bottom: 10rem;
+                    padding-left: 5rem;
+                    padding-right: 5rem;
+                }
+               .css-1d391kg {
+                    padding-top: 3.5rem;
+                    padding-right: 1rem;
+                    padding-bottom: 3.5rem;
+                    padding-left: 1rem;
+                }
+        </style>
+        """, unsafe_allow_html=True)
 
 def set_state(i):
     st.session_state.stage = i
-
 
 # Page configuration
 if 'stage' not in st.session_state:
@@ -19,14 +38,13 @@ if 'stage' not in st.session_state:
 if 'start' not in st.session_state:
     st.session_state.start = 0
 
-col1,  col2, temp1, temp2, col3 = st.columns([1,5,1,1,5])
-# Add a picture under the header in column 1
 
 if st.session_state.get("start")==1:
-    img_file = st.sidebar.file_uploader(label='Upload an image', type=['png', 'jpg','jpeg'],key=st.session_state.get("key"))
+    img_file = st.sidebar.file_uploader(label='Upload an image', type=['png', 'jpg','jpeg'],key=st.session_state.get("key"), accept_multiple_files = False)
     if img_file and st.session_state.stage == 0:
         set_state(1)
 
+# starting page
 if st.session_state.stage == 0:
     st.markdown("# NAIL ANALYSIS")
     st.markdown("#### Early Nail Diseases Detection")
@@ -51,10 +69,6 @@ if st.session_state.stage == 0:
     st.image(image_path, caption='', use_column_width=True)
     col5.text("")
     col5.markdown("##### Upload an image to check if your nails are healthy")
-# uploaded_image = col2.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"], key="upload_image_button")
-#if uploaded_image is not None:
-    # Display the uploaded image
-   # image = Image.open(uploaded_image)
 
     botton1, botton2, botton3 = st.columns([5.6,2,5])
     if st.session_state.get("start")==0:
@@ -62,6 +76,7 @@ if st.session_state.stage == 0:
             st.session_state.start=1
             st.rerun()
 
+# cropping page
 if st.session_state.stage == 1: #cropping an image
         if img_file:
             st.markdown("##### Select your nail in your image:")
@@ -73,28 +88,35 @@ if st.session_state.stage == 1: #cropping an image
 
             with tn1:
                 img = Image.open(img_file)
-                # Get a cropped image from the frontend
+
+                # try to use computer vision to detect the nail in the picture
+                try:
+                    default_coords = detect_nail_bounding_box(img)
+                except:
+                    default_coords = None
+
+                # Show a image cropper tool that the user can interact with
                 image = st_cropper(img, realtime_update = True, box_color='#FF8505',
-                                aspect_ratio = None, return_type='image',
+                                aspect_ratio = None, default_coords=default_coords,
+                                return_type='image',
                                 should_resize_image = True
                                     )
-            # Manipulate cropped image at will
+
             t2.text("")
 
+            # show a reallife preview of the cropped image selection
             t2.write("Preview")
-
-            #tumbnail_ = image.thumbnail((150,200))
             tn2.image(image.resize((image.width*150//image.height,150)))
 
             st.session_state.image = image
 
-            #col1.image(image, caption='Uploaded Image', use_column_width=True)
+            # "Scan" botton acceptes the user selection of the cropped image and starts prediction
             if tn3.button('scan'):
                 set_state(2)
                 st.rerun()
 
-
-if st.session_state.stage == 2: # prediction and Q&A
+# prediction and Q&A page
+if st.session_state.stage == 2:
 
     st.session_state.image.convert('RGB').save('image.jpg')
     with open('image.jpg', 'rb') as f:
@@ -122,7 +144,7 @@ if st.session_state.stage == 2: # prediction and Q&A
         image = st.session_state.image
         pred1.text("")
         pred1.image(image.resize((image.width*150//image.height,150)))
-        pred3.info(f"{prediction}, probability {prob_rounded}%")
+        pred3.warning(f"{prediction}, probability {prob_rounded}%")
         if pred3.button('new prediction'):
             set_state(0)
             if st.session_state.get("key")==1:
