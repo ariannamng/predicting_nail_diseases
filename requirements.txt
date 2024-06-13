@@ -15,3 +15,5 @@ colorama
 python-multipart
 streamlit_cropper
 inference_sdk
+cv2
+supervision
