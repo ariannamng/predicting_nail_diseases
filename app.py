@@ -76,7 +76,7 @@ if st.session_state.stage == 0:
             st.session_state.start=1
             st.rerun()
 
-# cropping page
+#
 if st.session_state.stage == 1: #cropping an image
         if img_file:
             st.markdown("##### Select your nail in your image:")
@@ -110,13 +110,13 @@ if st.session_state.stage == 1: #cropping an image
 
             st.session_state.image = image
 
-            # "Scan" botton acceptes the user selection of the cropped image and starts prediction
+            # Scan botton acceptes the user selection of the cropped image and starts prediction
             if tn3.button('scan'):
                 set_state(2)
                 st.rerun()
 
-# prediction and Q&A page
-if st.session_state.stage == 2:
+
+if st.session_state.stage == 2: # prediction and Q&A
 
     st.session_state.image.convert('RGB').save('image.jpg')
     with open('image.jpg', 'rb') as f:

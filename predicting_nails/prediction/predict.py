@@ -8,8 +8,18 @@ from tensorflow import keras
 
 from google.cloud import storage
 # from preprocessing import preprocesssing_user_image
-
-def load_model() -> keras.Model:
+categories = ['normal', 'beau_s line', 'black line', 'clubbing', 'mees_ line', 'onycholysis', 'terry_s nail', 'white spot']
+friendly_names = {
+    'normal': 'Healthy nails',
+    'beau_s line': 'Beaus lines',
+    'black line': 'Black line',
+    'clubbing': 'Clubbing',
+    'mees_ line': 'Mees line',
+    'onycholysis': 'Onychomycosis',
+    'terry_s nail': 'Terry\'s nail',
+    'white spot': 'White spot'
+}
+def load_model(name) -> keras.Model:
     """
     Return a saved model:
     - locally (latest one in alphabetical order)
@@ -27,11 +37,15 @@ def load_model() -> keras.Model:
         if not local_model_paths:
             return None
 
-        most_recent_model_path_on_disk = sorted(local_model_paths)[-1]
+        most_recent_model_path_on_disk = sorted(local_model_paths)[0]
+
+        if name == 'binary_model':
+            most_recent_model_path_on_disk = sorted(local_model_paths)[0]
+        elif name == 'complex_model':
+            most_recent_model_path_on_disk = sorted(local_model_paths)[1]
 
         print(Fore.BLUE + f"\nLoad latest model from disk..." + Style.RESET_ALL)
 
-        #latest_model = keras.layers.TFSMLayer(most_recent_model_path_on_disk)
         latest_model = keras.models.load_model(most_recent_model_path_on_disk)
 
 
@@ -61,7 +75,7 @@ def load_model() -> keras.Model:
             return None
 
 
-def predict(img):
+def predict(img, model, model2):
     """
     Preprocess the image.
     Make a binary prediction of healthy and diseases nails.
@@ -73,18 +87,62 @@ def predict(img):
     X_reshaped = img_array.reshape((-1, 256, 256, 3))
     X_processed = X_reshaped/255.0 - 0.5
 
-    model = load_model()
     try:
         result = model.predict(X_processed)[0][0]
         print(result)
         if(result < 0.5):
-          prediction = "Healthy nails"
-          prob = np.round(1-result,3)
+            prediction = "Healthy nails"
+            prob = np.round(1-result,3)
         if(result >= 0.5):
-          prediction = "diseased nail"
-          prob = np.round(result,3)
-        #return LABLES_SIMPLE[y_pred]
+            print ('using second model')
+            prediction, prob = complex_predict(model2,X_processed)
         print("The prediction is a", prediction,"with", prob*100, "% probability.")
         return prediction, prob
     except:
         print("\n❌ Prediction failed. Check your models")
+
+def complex_predict (model,X_processed ):
+    try:
+        result = model.predict(X_processed)[0]
+        max_prob = np.max(result)
+        prediction = ""
+        prob = 0
+
+        if result[0] == max_prob:
+            prediction = 'normal'
+            prob = result[0]
+        elif result[1] == max_prob:
+            prediction = 'beau_s line'
+            prob = result[1]
+        elif result[2] == max_prob:
+            prediction = 'black line'
+            prob = result[2]
+        elif result[3] == max_prob:
+            prediction = 'clubbing'
+            prob = result[3]
+        elif result[4] == max_prob:
+            prediction = 'mees_ line'
+            prob = result[4]
+        elif result[5] == max_prob:
+            prediction = 'onycholysis'
+            prob = result[5]
+        elif result[6] == max_prob:
+            prediction = 'terry_s nail'
+            prob = result[6]
+        elif result[7] == max_prob:
+            prediction = 'white spot'
+            prob = result[7]
+
+        friendly_name = friendly_names[prediction]
+        prob = np.round(prob, 3)
+
+        if prediction != 'normal':
+            disease_status = 'Disease'
+            print(f"The prediction is '{disease_status}: {friendly_name}' with {prob*100}% probability.")
+            return friendly_name, prob
+        else:
+            print(f"The prediction is '{friendly_name}' with {prob*100}% probability.")
+            return friendly_name, prob
+    except Exception as e:
+        print(f"\n❌ Prediction failed. Check your models. Error: {e}")
+        return None, None
