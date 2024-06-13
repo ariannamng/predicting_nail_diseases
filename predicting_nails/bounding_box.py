@@ -6,7 +6,7 @@ from io import BytesIO
 def detect_nail_bounding_box(image_file: Image.Image) -> dict:
     # define the image url to use for inference by encoding image to base64
     buffered = BytesIO()
-    image_file.save(buffered, format="JPG")
+    image_file.save(buffered, format="PNG")
     buffered.seek(0)
     img_byte = buffered.getvalue()
     img_str =  base64.b64encode(img_byte).decode()
