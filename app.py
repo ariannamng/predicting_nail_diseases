@@ -12,7 +12,6 @@ from streamlit_cropper import st_cropper
 
 
 # Assume 'predict_disease' is a function from your CNN model module
-#from model import predict_disease
 
 # Page configuration
 if 'stage' not in st.session_state:
@@ -32,13 +31,6 @@ if st.session_state.stage == 0:
     im2.image(image_path, caption='', use_column_width=True)
     col5.text("")
     col5.markdown("##### Upload an image to check if your nails are healthy")
-# uploaded_image = col2.file_uploader("Choose an image...", type=["jpg", "png", "jpeg"], key="upload_image_button")
-
-
-#if uploaded_image is not None:
-    # Display the uploaded image
-   # image = Image.open(uploaded_image)
-
 
 
 def set_state(i):
@@ -78,7 +70,7 @@ if st.session_state.stage == 2: # prediction and Q&A
 
     st.session_state.image.convert('RGB').save('image.jpg')
     with open('image.jpg', 'rb') as f:
-        response = requests.post("https://nailpred-llcndp3loa-od.a.run.app/predict",files={'file':f}).json()
+        response = requests.post("http://127.0.0.1:8000/predict",files={'file':f}).json()
 
 
     botton1.markdown("# Nail Analysis")
@@ -112,7 +104,7 @@ if st.session_state.stage == 2: # prediction and Q&A
         if st.button("Get Answer"):
             if user_question:
                     # Simulate a response from the AI (this should be replaced with actual AI inference code)
-                    response = requests.get("https://nailpred-llcndp3loa-od.a.run.app/answer_question", params={'prediction' : prediction , 'question' : user_question})#change this to the prediction
+                    response = requests.get("http://127.0.0.1:8000/answer_question", params={'prediction' : prediction , 'question' : user_question})#change this to the prediction
                     st.markdown("#### AI Response:")
 
                     st.write(response.json()['answer'])
