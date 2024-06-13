@@ -70,7 +70,7 @@ if st.session_state.stage == 2: # prediction and Q&A
 
     st.session_state.image.convert('RGB').save('image.jpg')
     with open('image.jpg', 'rb') as f:
-        response = requests.post("http://127.0.0.1:8000/predict",files={'file':f}).json()
+        response = requests.post("https://nailpred-llcndp3loa-od.a.run.app/predict",files={'file':f}).json()
 
 
     botton1.markdown("# Nail Analysis")
@@ -104,7 +104,7 @@ if st.session_state.stage == 2: # prediction and Q&A
         if st.button("Get Answer"):
             if user_question:
                     # Simulate a response from the AI (this should be replaced with actual AI inference code)
-                    response = requests.get("http://127.0.0.1:8000/answer_question", params={'prediction' : prediction , 'question' : user_question})#change this to the prediction
+                    response = requests.get("https://nailpred-llcndp3loa-od.a.run.app/answer_question", params={'prediction' : prediction , 'question' : user_question})#change this to the prediction
                     st.markdown("#### AI Response:")
 
                     st.write(response.json()['answer'])

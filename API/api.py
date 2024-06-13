@@ -6,7 +6,9 @@ import io
 
 app=FastAPI()
 
-model = load_model()
+model = load_model('binary_model')
+model2 = load_model('complex_model')
+
 
 @app.get('/answer_question')
 def ask_questions(prediction, question):
@@ -18,5 +20,5 @@ async def prediction(file: UploadFile):
     img = Image.open(file.file)
     # request_object_content = await file.read()
     # img = Image.open(io.BytesIO(request_object_content))
-    pred,prob= predict(img, model)
+    pred,prob= predict(img, model, model2)
     return {'pred' : pred,'prob':float(prob)}

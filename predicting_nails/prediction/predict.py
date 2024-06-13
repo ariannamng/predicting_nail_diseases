@@ -75,7 +75,7 @@ def load_model(name) -> keras.Model:
             return None
 
 
-def predict(img, model):
+def predict(img, model, model2):
     """
     Preprocess the image.
     Make a binary prediction of healthy and diseases nails.
@@ -86,12 +86,7 @@ def predict(img, model):
     img_array = keras.utils.img_to_array(foo)
     X_reshaped = img_array.reshape((-1, 256, 256, 3))
     X_processed = X_reshaped/255.0 - 0.5
-<<<<<<< HEAD
-=======
 
-    model = load_model('binary_model')
-
->>>>>>> b54225de6eca93ffde2a193934a8c9d30838cfd7
     try:
         result = model.predict(X_processed)[0][0]
         print(result)
@@ -100,8 +95,7 @@ def predict(img, model):
             prob = np.round(1-result,3)
         if(result >= 0.5):
             print ('using second model')
-            model = load_model('complex_model')
-            prediction, prob = complex_predict(model,X_processed)
+            prediction, prob = complex_predict(model2,X_processed)
         print("The prediction is a", prediction,"with", prob*100, "% probability.")
         return prediction, prob
     except:
