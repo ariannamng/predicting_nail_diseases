@@ -17,3 +17,4 @@ streamlit_cropper
 inference_sdk
 opencv-python
 supervision
+libgl1
