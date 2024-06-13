@@ -15,5 +15,5 @@ colorama
 python-multipart
 streamlit_cropper
 inference_sdk
-opencv
+opencv-python
 supervision
